@@ -1,133 +1,89 @@
-# Proyecto - Sistema de Gestión de Estudiantes
+# Actividad: Desarrollo de API RESTful con Spring Boot y Prisma.io
 
-Este es un proyecto backend desarrollado con **Java 21** y **Spring Boot** para la gestión de estudiantes. Incluye una API RESTful que permite crear, leer, actualizar y eliminar (CRUD) registros de estudiantes, persistiendo los datos en una base de datos **PostgreSQL**.
+**Estudiante:** Víctor Alejandro Berrío Rivera
+**Institución:** CESDE  
+**Materia:** Desarrollo de Backend II  
 
-## 🚀 Tecnologías Utilizadas
+---
 
-- **Java 21**: Lenguaje de programación.
-- **Spring Boot 3.x**: Framework para el desarrollo de la aplicación.
-- **Maven**: Gestor de dependencias y construcción.
-- **PostgreSQL**: Base de datos relacional.
-- **Lombok**: Librería para reducir el código boilerplate (Getters, Setters, etc.).
-- **Spring Data JPA**: Abstracción para la capa de persistencia.
+## 1. Introducción
+Este proyecto consiste en el diseño y despliegue de una **API RESTful** construida con **Spring Boot 3.4.3**. La aplicación gestiona un modelo de datos de estudiantes y utiliza **Prisma.io** como proveedor de base de datos **PostgreSQL** en la nube, garantizando persistencia y escalabilidad.
 
-## 📋 Requisitos Previos
 
-Asegúrate de tener instalado lo siguiente en tu entorno local:
 
-- [Java JDK 21](https://www.oracle.com/java/technologies/downloads/#java21)
-- [Maven](https://maven.apache.org/download.cgi)
-- Cliente para probar la API (como [Postman](https://www.postman.com/) o [Insomnia](https://insomnia.rest/)).
+## 2. Instancia de Base de Datos en Prisma.io
+Se ha creado y configurado una instancia de base de datos relacional en la plataforma Prisma.io.
 
-## ⚙️ Configuración
 
-La configuración de la base de datos se maneja a través de variables de entorno definidas en un archivo `.env` en la raíz del proyecto.
+---<img width="1166" height="162" alt="Captura de pantalla 2026-03-11 203235" src="https://github.com/user-attachments/assets/45e52e09-cdbc-4f42-b0ac-60462ad2bc6a" />
 
-1.  Copia el archivo de ejemplo:
-    ```bash
-    copy .env.example .env
-    ```
+---
 
-2.  Edita el archivo `.env` y define tus credenciales:
-    ```ini
-    DB_URL=jdbc:postgresql://localhost:5432/tu_base_de_datos
-    DB_USERNAME=tu_usuario
-    DB_PASSWORD=tu_contraseña
-    ```
+## 3. Configuración de la Base de Datos
+La conexión se estableció mediante el protocolo seguro de PostgreSQL. Los parámetros de configuración aseguran que la comunicación esté cifrada mediante SSL.
 
-> **Nota:** El archivo `.env` está excluido del control de versiones para mantener tus credenciales seguras.
+**URL de conexión utilizada:** `postgresql://db.prisma.io:5432/postgres?sslmode=require`
+---
 
-## 🛠️ Instalación y Ejecución (Windows)
+## 4. Log de Inicio de Spring Boot
+Evidencia del arranque exitoso de la aplicación. En el log se observa la inicialización de **Hibernate** y la exposición de los endpoints en el puerto **8080**.
 
-1.  **Clonar el repositorio**:
-    ```powershell
-    git clone <url-del-repositorio>
-    cd pi
-    ```
 
-2.  **Compilar el proyecto**:
-    Asegúrate de estar en la raíz del proyecto y ejecuta:
-    ```powershell
-    .\mvnw.cmd clean install
-    ```
-    *Nota: Si tienes Maven instalado globalmente, puedes usar simplemente `mvn clean install`.*
+<img width="869" height="303" alt="Captura de pantalla 2026-03-11 203617" src="https://github.com/user-attachments/assets/37eec0cf-4050-412b-a56c-8c6ecb8a71ef" />
 
-3.  **Ejecutar la aplicación**:
-    ```powershell
-    .\mvnw.cmd spring-boot:run
-    ```
+---
 
-    La aplicación se iniciará en el puerto `8080` (por defecto).
+## 5. Evidencia de Pruebas de la API (CRUD)
+Se utilizaron las herramientas de **Postman** para interactuar con la API base en la ruta `/api/students`. A continuación, se detallan los resultados:
 
-## 🔌 Uso de la API (Endpoints)
+### A. POST: Crear Estudiantes
+Se realizaron 3 peticiones exitosas para registrar nuevos estudiantes en la base de datos de Prisma.
+<img width="767" height="574" alt="Captura de pantalla 2026-03-11 201135" src="https://github.com/user-attachments/assets/b45f071b-6acf-47e6-81d1-bb599a55340a" />
 
-La API base es `/api/students`. A continuación se detallan los endpoints disponibles:
+<img width="783" height="599" alt="Captura de pantalla 2026-03-11 200948" src="https://github.com/user-attachments/assets/72f826e2-584c-4da2-94de-583bab0ae03c" />
+<img width="766" height="618" alt="Captura de pantalla 2026-03-11 201412" src="https://github.com/user-attachments/assets/25347113-6530-40e1-ac89-79e7b21fee6c" />
 
-### 1. Obtener todos los estudiantes
-- **Método**: `GET`
-- **URL**: `/api/students`
-- **Respuesta**: Lista de estudiantes en formato JSON.
+### B. GET ALL: Listar Estudiantes
+Consulta general para verificar que los datos creados se persisten correctamente en la nube.
+<img width="767" height="626" alt="Captura de pantalla 2026-03-11 201430" src="https://github.com/user-attachments/assets/3b4a96c8-e860-4525-9336-2adafc78d827" />
 
-### 2. Obtener un estudiante por ID
-- **Método**: `GET`
-- **URL**: `/api/students/{id}`
-- **Ejemplo**: `/api/students/1`
 
-### 3. Obtener un estudiante por Email
-- **Método**: `GET`
-- **URL**: `/api/students/email/{email}`
-- **Ejemplo**: `/api/students/email/ejemplo@correo.com`
 
-### 4. Crear un nuevo estudiante
-- **Método**: `POST`
-- **URL**: `/api/students`
-- **Body (JSON)**:
-    ```json
-    {
-      "firstName": "Juan",
-      "lastName": "Pérez",
-      "email": "juan.perez@example.com",
-      "birthDate": "2000-01-15",
-      "phone": "1234567890"
-    }
-    ```
+### C. GET by ID: Obtener por ID
+Búsqueda específica de un estudiante utilizando su identificador único autogenerado.
+<img width="762" height="418" alt="Captura de pantalla 2026-03-11 201453" src="https://github.com/user-attachments/assets/752d9d91-e76f-42d0-89dc-1299f6cbf677" />
 
-### 5. Actualizar un estudiante
-- **Método**: `PUT`
-- **URL**: `/api/students/{id}`
-- **Ejemplo**: `/api/students/1`
-- **Body (JSON)**:
-    ```json
-    {
-      "firstName": "Juan Carlos",
-      "lastName": "Pérez",
-      "email": "juan.perez@example.com",
-      "birthDate": "2000-01-15",
-      "phone": "0987654321"
-    }
-    ```
 
-### 6. Eliminar un estudiante
-- **Método**: `DELETE`
-- **URL**: `/api/students/{id}`
-- **Ejemplo**: `/api/students/1`
+### D. GET by Email: Obtener por Correo
+<img width="769" height="510" alt="Captura de pantalla 2026-03-11 201518" src="https://github.com/user-attachments/assets/ec13e5f2-a86c-4b5e-9c23-ffcde3c94202" />
 
-## 🧪 Ejecutar Pruebas
 
-Para ejecutar las pruebas unitarias y de integración, usa el siguiente comando:
+### E. PUT: Actualizar Información
+Modificación de los campos `firstName` y `phone` de un registro existente.
 
-```powershell
-.\mvnw.cmd test
-```
+<img width="761" height="581" alt="Captura de pantalla 2026-03-11 201603" src="https://github.com/user-attachments/assets/94241eb3-eb12-4b56-a613-665e0d316b7e" />
 
-## 📂 Estructura del Proyecto
 
-```
-src/main/java/com/cesde/pi
-├── controller    # Controladores REST (StudentController)
-├── model         # Entidades JPA (Student)
-├── repository    # Interfaces de Repositorio (StudentRepository)
-├── service       # Lógica de Negocio (StudentService)
-├── dto           # Objetos de Transferencia de Datos
-└── exception     # Manejo de Excepciones Globales
-```
+### F. DELETE: Eliminar Estudiante
+Validación de la eliminación física de un registro en la base de datos.
+
+<img width="756" height="457" alt="Captura de pantalla 2026-03-11 201624" src="https://github.com/user-attachments/assets/31927ca5-6800-4a3a-aca4-929fdb60c42b" />
+
+
+---
+
+## 6. Ejecución de Pruebas Unitarias y de Integración
+Se ejecutó el comando `./mvnw test` para validar la integridad del código. Las pruebas internas del proyecto finalizaron con éxito.
+
+* **Tests run:** 1
+* **Failures:** 0
+* **Errors:** 0
+* **Build Status:** SUCCESS
+
+<img width="836" height="207" alt="Captura de pantalla 2026-03-11 202259" src="https://github.com/user-attachments/assets/f7c6710a-9b54-40ec-9331-30130d9e8879" />
+
+
+---
+
+## 7. Conclusiones
+La integración de **Spring Boot** con **Prisma.io** permite un ciclo de desarrollo ágil, separando la lógica de negocio de la gestión de la infraestructura de datos. Se validó correctamente el funcionamiento de todos los métodos HTTP, asegurando que la API cumple con los estándares RESTful requeridos.
